@@ -16,6 +16,8 @@ namespace Rhino.Licensing
     /// </summary>
     public abstract class AbstractLicenseValidator
     {
+        private const int ThresholdYearForNotCheckingExpirationDateViaNtp = 8000;
+
         /// <summary>
         /// License validator logger
         /// </summary>
@@ -54,7 +56,7 @@ namespace Rhino.Licensing
         public event Action<InvalidationType> LicenseInvalidated;
 
         /// <summary>
-        /// Gets the expiration date of the license
+        /// Gets the expiration date of the license. Internally we consider any date about 8000-01-01 to be a permanent license.
         /// </summary>
         public DateTime ExpirationDate
         {
@@ -190,7 +192,7 @@ namespace Rhino.Licensing
                 else
                     result = DateTime.UtcNow < ExpirationDate;
 
-                if (result)
+                if (result && (ExpirationDate.Year < ThresholdYearForNotCheckingExpirationDateViaNtp))
                     ValidateUsingNetworkTime();
                 else
                     throw new LicenseExpiredException("Expiration Date : " + ExpirationDate);
