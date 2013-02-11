@@ -192,10 +192,12 @@ namespace Rhino.Licensing
                 else
                     result = DateTime.UtcNow < ExpirationDate;
 
-                if (result && (ExpirationDate.Year < ThresholdYearForNotCheckingExpirationDateViaNtp))
-                    ValidateUsingNetworkTime();
-                else
+                if (!result)
                     throw new LicenseExpiredException("Expiration Date : " + ExpirationDate);
+
+                if (ExpirationDate.Year < ThresholdYearForNotCheckingExpirationDateViaNtp)
+                    ValidateUsingNetworkTime();
+
                 return true;
             }
             catch (RhinoLicensingException)

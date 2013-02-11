@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseLicenseTest.cs" />
+    <Compile Include="Bugs.cs" />
     <Compile Include="Can_generate_and_validate_key.cs" />
     <Compile Include="Can_check_trial_date.cs" />
     <Compile Include="Can_use_floating_licenses.cs" />
